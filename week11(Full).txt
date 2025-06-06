@@ -1,0 +1,105 @@
+week 11:
+
+Home.js:
+----------------------------------------------------------------------------
+
+const Home=()=>{
+      return <h1>Welcome to CMRIT Home Page</h1>
+};
+export default Home;
+
+
+Profile.js:
+----------------------------------------------------------------------------
+
+const Profile=()=>{
+      return <> <h1>Welcome Parthiban</h1>
+      <p>Ordinary Person</p>
+      </>
+};
+export default Profile;
+
+ContactUs.js:
+-----------------------------------------------------------------------------
+
+const ContactUs=()=>{
+      return <h1>CMRIT, Medchal, HYD</h1>
+};
+export default ContactUs;
+
+Layout.js:
+------------------------------------------------------------------------------
+
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import {Outlet} from 'react-router-dom';
+import logo from "../assets/logo.png";
+const Layout=()=>{
+      return(
+            <>
+            <Navbar bg="primary" data-bs-theme="dark">
+                  <Container>
+                        <Navbar.Brand href="/">
+                        <img alt="logo" src={logo} width='30' height='30' className='d-inline-block align-top'/>React SPA
+                        </Navbar.Brand>
+                        <Nav className="me-auto">
+                              <Nav.Link href="/">Home</Nav.Link>
+                              <Nav.Link href="profile">Profile</Nav.Link>
+                              <Nav.Link href="contact">ContactUs</Nav.Link>
+                        </Nav>
+                  </Container>
+            </Navbar>
+            <Outlet/>
+            </>
+      );
+};
+export default Layout;
+
+
+index.js:
+-------------------------------------------------------------------------------
+
+import ReactDOM from 'react-dom/client';
+import {BrowserRouter,Routes,Route} from 'react-router-dom';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min";
+import Layout from './templates/Layout';
+import Home from './templates/Home';
+import Profile from './templates/Profile';
+import ContactUs from './templates/ContactUs'
+export default function App(){
+  return(
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout/>}>
+      <Route index element={<Home/>}/>
+      <Route path="profile" element={<Profile/>}/>
+      <Route path="contact" element={<ContactUs/>}/>
+      </Route>  
+    </Routes>
+    </BrowserRouter>
+  );
+}
+const root=ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App/>)
+
+
+Steps For Execution:
+-------------------------------------------------------------------------------
+1. Create your project directory and navigate to it using the command line (cmd).
+2. Install the npx package globally: npm install -g npx
+3. Install the create-react-app package globally: npm install -g create-react-app
+4. Create a new React Single Page Application (SPA) project named "spa": npx create-react-app spa
+5. Navigate into the newly created "spa" project directory: cd spa
+6. Inside the src folder, create two new folders named templates and assets.
+7. Within the templates folder, create the following JavaScript files and paste the corresponding code into each:
+*Home.js
+*Profile.js
+*ContactUs.js
+*Layout.js
+Additionally, place the logo.png file inside the assets folder located within the src directory.
+8. Modify the contents of the index.js file as provided in your file.
+9. Install the react-router-dom and react-bootstrap npm packages: npm install react-router-dom react-bootstrap
+10. Install the bootstrap CSS framework (version 5.1.3) as an npm package: npm install react-bootstrap bootstrap@5.1.3
+11. Start the React development server: npm start

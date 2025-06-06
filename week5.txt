@@ -1,0 +1,321 @@
+index.html:
+-------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Experiment 5 Sample Node Server</title>
+      <style>
+            a{
+                  background-color: #121212;
+                  color: yellow;
+                  font-size: 50px;
+                  margin: 1px solid
+            }
+            body{
+                  position: relative;
+                  text-align: center;
+                  top: 200px;;
+            }
+      </style>
+</head>
+
+<body>
+      <div>
+            <a href="/login">LOGIN</a>&nbsp;&nbsp;
+            <a href="/register">REGISTER</a>
+      </div>
+</body>
+</html>
+
+
+
+login.html:
+----------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Login</title>
+</head>
+<script>
+      function LoginValidate(){
+            var enteremail=document.getElementById('email').value;
+            var enterpassword=document.getElementById('pwd').value;
+            var getemail=localStorage.getItem('email');
+            var getpwd=localStorage.getItem('password');
+            if(enteremail==getemail){
+                  if(enterpassword==getpwd){
+                        alert("Login Success");
+                        window.location="/welcome";
+                        return false;
+                  }
+                  else{
+                        alert("Wrong Password");
+                  }
+            }
+            else{
+                  alert("Invalid Credentials");
+            }
+      }
+</script>
+<body style="text-align:center">
+      <div class="main">
+      <form>
+            <label for="first">
+                  Email
+            </label>
+            <input type="text" name="first" id="email" placeholder="enter email" required/>
+            <br><br>
+            <label for="password">
+                  Password
+            </label>
+            <input type="password" name="password" id="pwd" placeholder="enter password" required/>
+            <br><br>
+            <button type="submit" onclick="return LoginValidate()">LOGIN</button>
+            <br><br>
+      </form>
+      </div>
+      <p> Not Registered?
+            <a href="/register" style="text-decoration: none;">
+                  Create An Account
+            </a>
+      </p>
+</body>
+</html>
+
+
+register.html:
+-------------------------------------------------------------------------------------------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+      <style>
+            body{
+                  text-align: center;
+                  font-family: sans-serif;
+            }
+            table tr td{
+                  padding-top: 6px;
+                  padding-bottom: 6px;
+            }
+            fieldset{
+                  width: 500px;
+                  text-align: center;
+                  margin: auto;
+            }
+            h1{
+                  font-size: 20px;
+                  font-family: 'Times New Roman', Times, serif;
+            }
+      </style>
+      <div id="header"><h1>Register</h1></div>
+</head>
+      <script>
+            function validate(){
+                 
+                  var fn=frm.fname.value;
+                  localStorage.setItem('firstname',fn);
+                  for(x in fn){
+                        ch=fn.charCodeAt(x);
+                        if(ch<65||ch>90 && ch<97|| ch>122){
+                              alert("Invalid First name");
+                              return false;    
+                        }
+                  }
+                 
+                  var ln=frm.lname.value;
+                  localStorage.setItem('lastname',ln);
+                  for(y in ln){
+                        ch=ln.charCodeAt(y);
+                        if(ch<65||ch>90 && ch<97|| ch>122){
+                              alert("Invalid Last name");
+                              return false;    
+                        }
+                  }
+
+                  var phn=frm.phone.value;
+                  localStorage.setItem('phone',phn);
+                  var lenp=phn.length;
+                  if(lenp!==10){
+                        alert("Phone Number Should be exactly 10 digits");
+                        return false;
+                  }
+
+                  var pwd1=frm.pwd.value;
+                  localStorage.setItem("password",pwd1);
+                  var pwdl=pwd1.length;
+                  if(pwdl%2===1){
+                        alert("Password Should Contain Even Number Number Of Characters");
+                        return false;
+                  }
+                  if(pwd1>8){
+                        alert("Password Should Not Exceed 8 digits");
+                        return false;
+                  }
+
+                  var reg=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                  var mail=frm.mailid.value;
+                  localStorage.setItem('email',mail);
+                  if(reg.test(mail)){
+                        alert("Registration successful");
+                  }
+                  else{
+                        alert("Invalid Email");
+                        return false;
+                  }
+                  return true;
+            }
+      </script>
+<body>
+      <center>
+            <form name="frm" method="post" action= "/login" onsubmit="return validate()">
+                  <fieldset allign="cneter">
+                        <table allign="center">
+                              <tr>
+                                    <td>First Name:</td>
+                                    <td><input type="text" name="fname" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Last Name:</td>
+                                    <td><input type="text" name="lname" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Phone Number:</td>
+                                    <td><input type="text" name="phone" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Email:</td>
+                                    <td><input type="email" name="mailid" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Gender:</td>
+                                    <td>
+                                          Male: <input type="radio" name="gender" value="male">
+                                          Female: <input type="radio" name="gender" value="female">
+                                    </td>
+                              </tr>
+                              <tr>
+                                    <td>DOB:</td>
+                                    <td><input type="date" name="dob" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>User Name:</td>
+                                    <td><input type="text" name="uname" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Password:</td>
+                                    <td><input type="password" name="pwd" value="" size="50" required/></td>
+                              </tr>
+                              <tr>
+                                    <td>Age:</td>
+                                    <td><input type="text" name="age" value="" size="50" required/></td>
+                              </tr>
+                        </table>
+                        <input type="submit" value="Submit" name="submit"/>
+                  </fieldset>
+            </form>
+      </center>
+</body>
+      <div id="footer">Copyright@CMRIT_2025</div>
+</html>
+
+
+
+welcome.html:
+-------------------------------------------------------------------------------------------------------------------------------
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+</head>
+<script>
+      function LogoutValidate(){
+            localStorage.clear();
+      }
+      function getdetails(){
+            var getfirstname=localStorage.getItem('firstname');
+            var getemail=localStorage.getItem("email");
+            document.getElementById('data').innerHTML="Welcome "+getfirstname+" "+getemail;
+      }
+</script>
+<body onload="getdetails()">
+      <h1 id="data">
+            Welcome To Cmrit
+      </h1>
+      <form action="/" method="post">
+            <button type="submit" onclick="LogoutValidate()">LOGOUT</button>
+      </form>
+</body>
+</html>
+
+
+
+
+server.js:
+--------------------------------------------------------------------------------------------------------------------------------
+
+const express=require('express');
+const app=express();
+
+app.use(express.json());
+
+app.get('/',(req,res)=>{
+    res.sendFile(__dirname+'/index.html');
+});
+
+app.get('/login',(req,res)=>{
+    res.sendFile(__dirname+'/login.html');
+});
+
+app.get('/register',(req,res)=>{
+    res.sendFile(__dirname+'/register.html');
+});
+
+app.get('/welcome',(req,res)=>{
+    res.sendFile(__dirname+'/welcome.html');
+});
+
+app.post('/',(req,res)=>{
+    res.redirect('/');
+});
+
+app.post('/login',(req,res)=>{
+    res.redirect('/login');
+});
+
+app.post('/register',(req,res)=>{
+    res.redirect('/register');
+});
+
+app.post('/welcome',(req,res)=>{
+    res.redirect('/welcome');
+});
+
+app.listen(3000,()=>{
+    console.log("Our express server is up on port 3000");
+});
+
+
+
+
+Steps to Execute the Program:
+----------------------------------
+1. Install Node.js on your system.
+2. Verify the installation by typing (node --version) in the command prompt.
+3. Once the code is ready, open your project folder in the command prompt and run (npm install node). npm stands for node package manager.
+4. After the successful installation, you will see the node_modules folder and other JSON files in the project directory.
+5. Next, install Express by typing (npm install express) in the command prompt.
+6. Once Express is installed, start the server by running (node server.js) in the command prompt.
+7. Open your browser and search for (localhost:3000) to see the output.
+
