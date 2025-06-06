@@ -1,9 +1,7 @@
 const express=require("express");
-const path=require("path");
-const fs=require("fs");
-const users=require("./database.json");
+const db=require("./database.js");
 const jwt=require("jsonwebtoken");
-var database;
+const {MongoClient}=require('mongodb');
 var token;
 const app=express();
 const port=3600;
@@ -16,89 +14,62 @@ app.get('/welcome',(req,res)=>{
 });
 app.get('/login',(req,res)=>{
       res.sendFile(__dirname+'/login.html');
-});
+});  
 app.get('/signup',(req,res)=>{
       res.sendFile(__dirname+'/signup.html');
 });
 //Signup route
-app.post("/register",(req,res)=>{
+app.post("/register",async(req,res)=>{
       const name=req.body.name;
       const password=req.body.password;
       const work=req.body.work;
-      let isPresent=false;
-      let isPresentIndex=null;
-      fs.readFile("database.json",function(err,data){
-            if(err) throw err;
-            database=JSON.parse(data);
-            for(let i=0;i<database.length;i++){
-                  if(database[i].name===name&&database[i].password===password){
-                        isPresent=true;
-                        isPresentIndex=i;
-                        break;
-                  }
-            }
-            if(isPresent){
-                  res.json({
-                        signup:false,
-                        token:null,
-                        error:"already Registered",
-                  });
-            }
-            else{
-                  let user={
+      tuple=await db.getData(name,password)
+      if(JSON.parse(tuple).length>0)
+      {
+            res.json({
+                  signup:false,
+                  token:null,
+                  error:"Already Registered",
+            });
+      }
+      else{
+            const token=jwt.sign(tuple,"secret");
+            let emp={
                   name:name,
-                  password:password,
                   work:work,
+                  password:password,
                   token:token
-                  };
-                  users.push(user)
-                  fs.writeFile(
-                        "database.json",JSON.stringify(users),
-                        err=>{
-                              if(err) throw err;
-                              res.json({
-                                    signup:true,
-                                    token:"generated",
-                                    data:"Successfully Registered",
-                              });
-                              console.log("Done writing");
-                        });
-            }
-      });
+            };
+            let result=await db.insertData(emp);
+            res.json({
+                  signup:true,
+                  token:"generated",
+                  result:result
+            });
+      }
 });
 //Login route
-app.post("/auth",(req,res)=>{
+app.post("/auth",async(req,res)=>{
       const name=req.body.name;
       console.log(name);
       const password=req.body.password;
       console.log(password);
-      let isPresent=false;
-      let isPresentIndex=null;
-      fs.readFile("database.json",function(err,data){
-            if(err) throw err;
-            database=JSON.parse(data);
-            for(let i=0;i<database.length;i++){
-                  if(database[i].name===name && database[i].password===password){
-                        isPresent=true;
-                        isPresentIndex=i;
-                        break;
-                  }
-            }
-            if(isPresent){
-                  const token=jwt.sign(database[isPresentIndex],"secret");
-                  res.json({
-                        login:true,
-                        token:token,
-                        data:database[isPresentIndex]
-                  });
-            }
-            else{
-                  res.json({
-                        login:false,
-                        error:"Please Check Name And Password",
-                  });
-            }
-      });
+      tuple=await db.getData(name,password);
+      if(JSON.parse(tuple).length>0){
+            const token=jwt.sign(tuple,"secret");
+            res.json({
+                  login:true,
+                  token:token,
+                  data:JSON.parse(tuple),
+            }); 
+      }
+      else{
+            res.json({
+                  login:false,
+                  error:"Please CHeck Name And Password",
+
+            });
+      }
 });
 //verifyToken
 app.post('/verifyToken',(req,res)=>{

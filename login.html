@@ -24,13 +24,13 @@
                               success:function(data){
                                     var tokenData=data;
                                     if(tokenData.login==true){
-                                          localStorage.setItem("username",tokenData.data.name);
-                                          localStorage.setItem("job",tokenData.data.work);
+                                          localStorage.setItem("username",tokenData.data[0].name);
+                                          localStorage.setItem("job",tokenData.data[0].work);
                                           if(verifyLogin(tokenData.token)){
                                                 window.location.href="/welcome";
                                           }}
                                     else{
-                                                alert("Authentication Failed");
+                                          alert("Authentication Failed")
                                           }
                                     
                               },
