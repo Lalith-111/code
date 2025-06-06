@@ -3,24 +3,25 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Document</title>
+      <title>Welcome Page</title>
+      <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+      <script>
+            var user=localStorage.getItem('username');
+            var job=localStorage.getItem("job");
+            $(document).ready(function(){
+                  $("#user").append(user);
+                  $("#job").append(job);
+            });
+      </script>
 </head>
-<script>
-      function LogoutValidate(){
-            localStorage.clear();
-      }
-      function getdetails(){
-            var getfirstname=localStorage.getItem('firstname');
-            var getemail=localStorage.getItem("email");
-            document.getElementById('data').innerHTML="Welcome "+getfirstname+" "+getemail;
-      }
-</script>
-<body onload="getdetails()">
-      <h1 id="data">
-            Welcome To Cmrit
-      </h1>
-      <form action="/" method="post">
-            <button type="submit" onclick="LogoutValidate()">LOGOUT</button>
-      </form>
+<body>
+      <center>
+            <h2>Welcome To CMRIT</h2>
+            <br>
+            <div style="border-style: solid; border-color:blue; width: 400px; height: 200px">
+                  <h4 id="user">USER:</h4>
+                  <h4 id="job">PROFESSION:</h4>
+            </div>
+      </center>
 </body>
 </html>

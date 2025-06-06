@@ -3,21 +3,15 @@
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Experiment 6</title>
-      <style>
-            h2{
-                  display: none;
-            }
-      </style>
+      <title>Login Page</title>
       <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
       <script>
-            const form=$("#loginform");
             $(document).ready(function(){
-                  $("#loginform").submit((event)=>{
+                  $("#loginform").submit(()=>{
                         event.preventDefault();
                         var name=$("#username").val();
                         var password=$("#pwd").val();
-                        //generate token by making a service call to /auth with POST
+                        //generate Token by making a service call to /auth with POST 
                         $.ajax({
                               url:"/auth",
                               type:"POST",
@@ -25,32 +19,30 @@
                               dataType:"json",
                               data:JSON.stringify({
                                     name:name,
-                                    password:password,
+                                    password:password
                               }),
                               success:function(data){
                                     var tokenData=data;
                                     if(tokenData.login==true){
+                                          localStorage.setItem("username",tokenData.data.name);
+                                          localStorage.setItem("job",tokenData.data.work);
                                           if(verifyLogin(tokenData.token)){
-                                                $("#verified").show();
-                                                $("#not-verified").hide();
-                                                alert("jwt token:"+tokenData.token);
-                                          }
-                                    }
+                                                window.location.href="/welcome";
+                                          }}
                                     else{
-                                          $("#verified").hide();
-                                          $("#not-verified").show();
-                                          alert("Authentication Failed")
-                                    }
+                                                alert("Authentication Failed");
+                                          }
+                                    
                               },
                               error:function(data){
-                                    console.log("Something went wrong")
+                                    console.log("Something Went Wrong");
                               }
                         });
                   });
             });
             function verifyLogin(token){
                   let result=true;
-                  //Verify Token by making a service call to /verifyToken with get
+                  //verify token by making a service call to /verifyToken with POST
                   $.ajax({
                         url:"/verifyToken",
                         type:"POST",
@@ -68,24 +60,22 @@
                               }
                         },
                         error:function(data){
-                              console.log("Wrong Token, NOt Authenticated")
+                              console.log("Wrong Token, Not Authenticated");
                         }
                   });
                   return result;
             }
       </script>
 </head>
-
 <body>
-      <h1>SIGN IN</h1>
-      <form id="loginform">
-            <label for="username">Username:</label><br>
-            <input type="text" id="username" name="username"><br>
-            <label for="password">Password:</label><br>
-            <input type="password" id="pwd" name="pwd"><br><br>
-            <input type="submit" value="submit">
-      </form>
-      <h2 id="verified">You are a verified user</h2>
-      <h2 id="not-verified">You are not a verified users</h2>
+      <center>
+            <form id="loginform">
+                  <label for="username">Username:</label>
+                  <input type="text" id="username" name="username"><br>
+                  <label for="password">Password:</label>
+                  <input type="password" id="pwd" name="pwd"><br><br>
+                  <input type="submit" value="Submit">
+            </form>
+      </center>
 </body>
 </html>
